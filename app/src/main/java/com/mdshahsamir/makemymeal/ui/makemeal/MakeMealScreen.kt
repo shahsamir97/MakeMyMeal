@@ -1,4 +1,5 @@
-package com.mdshahsamir.makemymeal.ui.createrecipe
+package com.mdshahsamir.makemymeal.ui.makemeal
+
 
 import android.graphics.Bitmap
 import androidx.camera.core.CameraSelector
@@ -54,32 +55,32 @@ import com.mdshahsamir.makemymeal.unil.getCameraProvider
 import androidx.camera.core.Preview as CameraPreview
 
 @Composable
-fun CreateRecipeScreen(
-    createRecipeViewModel: CreateRecipeViewModel = viewModel()
+fun MakeMealScreen(
+    makeMealViewModel: MakeMealViewModel = viewModel()
 ) {
-    val createRecipeUIState by createRecipeViewModel.createRecipeUIState.collectAsStateWithLifecycle()
-    val imageCaptureUIState by createRecipeViewModel.imageCaptureUIState.collectAsStateWithLifecycle()
+    val makeMealUIState by makeMealViewModel.makeMealUIState.collectAsStateWithLifecycle()
+    val imageCaptureUIState by makeMealViewModel.imageCaptureUIState.collectAsStateWithLifecycle()
 
-    CreateRecipeContent(
-        createRecipeUIState = createRecipeUIState,
+    MakeMealContent(
+        makeMealUIState = makeMealUIState,
         imageCaptureUIState = imageCaptureUIState,
         onClickCapture = {
-            createRecipeViewModel.captureImage(it)
+            makeMealViewModel.captureImage(it)
         },
         onClosePreview = {
-            createRecipeViewModel.activateCameraPreviewMode()
+            makeMealViewModel.activateCameraPreviewMode()
         }
     )
 
-    when(createRecipeUIState) {
-        CreateRecipeUIState.Loading -> MyLoader()
+    when(makeMealUIState) {
+        MakeMealUIState.Loading -> MyLoader()
         else -> {}
     }
 }
 
 @Composable
-fun CreateRecipeContent(
-    createRecipeUIState: CreateRecipeUIState,
+fun MakeMealContent(
+    makeMealUIState: MakeMealUIState,
     imageCaptureUIState: ImageCaptureUIState,
     onClickCapture: (imageCapture: ImageCapture) -> Unit,
     onClosePreview: () -> Unit,
@@ -112,26 +113,26 @@ fun CreateRecipeContent(
             Column(modifier = Modifier.padding(8.dp)){
                 if (imageCaptureUIState is ImageCaptureUIState.CameraPreview) {
                     Text(
-                        text = stringResource(R.string.create_recipe_helper_text),
+                        text = stringResource(R.string.make_meal_helper_text),
                         style = MaterialTheme.typography.labelLarge,
                         textAlign = TextAlign.Center
                     )
                 }
 
-                when(createRecipeUIState) {
-                     is CreateRecipeUIState.ContentGenerated -> {
+                when(makeMealUIState) {
+                    is MakeMealUIState.ContentGenerated -> {
                         Spacer(modifier = Modifier.height(22.dp))
                         TypeWriterText(
                             modifier = Modifier.fillMaxWidth(),
-                            text = createRecipeUIState.content
+                            text = makeMealUIState.content
                         )
                     }
 
-                    is CreateRecipeUIState.Error -> {
+                    is MakeMealUIState.Error -> {
                         Spacer(modifier = Modifier.height(22.dp))
                         TypeWriterText(
                             modifier = Modifier.fillMaxWidth(),
-                            text = createRecipeUIState.errorMessage,
+                            text = makeMealUIState.errorMessage,
                             textColor = Color.Red
                         )
                     }
@@ -223,8 +224,8 @@ fun ImagePreview(
 @Composable
 fun CreateRecipeContentPreview() {
     MakeMyMealAppTheme {
-        CreateRecipeContent(
-            createRecipeUIState = CreateRecipeUIState.Idle,
+        MakeMealContent(
+            makeMealUIState = MakeMealUIState.Idle,
             onClickCapture = {},
             onClosePreview = {},
             imageCaptureUIState = ImageCaptureUIState.CameraPreview,

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MakeMyMeal</string>
+    <string name="create_recipe">Create Recipe</string>
+    <string name="make_meal">Make Meal</string>
+    <string name="create_recipe_helper_text">Take a picture of a food item for which you want to create a recipe.</string>
+    <string name="make_meal_helper_text">Take a picture of a food you want to cook. We will provide you the recipe.</string>
+    <string name="capture_image">Capture Image</string>
+    <string name="dashboard">Dashboard</string>
 </resources>

@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.mdshahsamir.makemymeal.navigation.NavigationScreen
 import com.mdshahsamir.makemymeal.ui.createrecipe.CreateRecipeScreen
 import com.mdshahsamir.makemymeal.ui.dashboard.DashboardScreen
+import com.mdshahsamir.makemymeal.ui.makemeal.MakeMealScreen
 
 @Composable
 fun MakeMyMealApp(navHostController: NavHostController) {
@@ -17,11 +18,13 @@ fun MakeMyMealApp(navHostController: NavHostController) {
         composable(NavigationScreen.Dashboard.route) {
             DashboardScreen(navHostController)
         }
+
         composable(NavigationScreen.CreateRecipe.route) {
            CreateRecipeScreen()
         }
-        composable(NavigationScreen.MakeMeal.route) {
 
+        composable(NavigationScreen.MakeMeal.route) {
+            MakeMealScreen()
         }
     }
 }
