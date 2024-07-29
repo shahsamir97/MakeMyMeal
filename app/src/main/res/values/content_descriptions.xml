@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="meal_type_selected">%1$s selected</string>
+</resources>

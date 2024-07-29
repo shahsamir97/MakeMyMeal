@@ -43,19 +43,24 @@ class CreateRecipeViewModel: ViewModel() {
     private fun generateContent(image: Bitmap) {
         _createRecipeUIState.update { CreateRecipeUIState.Loading }
         viewModelScope.launch(Dispatchers.IO) {
-            val contet = content {
+            val content = content {
                 image(image)
-                text("What is this thing in this image?")
+                text("Accurately identify the food in the image and provide an appropriate and recipe consistent with your analysis. Do not ask any question")
             }
 
             try {
-                val response = generativeModel.generateContent(contet)
+                val response = generativeModel.generateContent(content)
                 _createRecipeUIState.update { CreateRecipeUIState.ContentGenerated(response.text.toString()) }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _createRecipeUIState.update { CreateRecipeUIState.Error(e.message.toString()) }
             }
         }
+    }
+
+    fun onPhotoPickedFromGallery(bitmap: Bitmap) {
+        generateContent(bitmap)
+        _imageCaptureUIState.update { ImageCaptureUIState.ImagePreview(bitmap) }
     }
 
     fun captureImage(

@@ -1,8 +1,8 @@
 package com.mdshahsamir.makemymeal.ui.makemeal
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,31 +25,36 @@ class MakeMealViewModel: ViewModel() {
     private val _imageCaptureUIState = MutableStateFlow<ImageCaptureUIState>(ImageCaptureUIState.CameraPreview)
     val imageCaptureUIState: StateFlow<ImageCaptureUIState> = _imageCaptureUIState
 
+    private lateinit var _imageContent: Bitmap
+    private var _mealType: String = ""
+    private var _cuisineType: String = ""
+
     private val imageCaptureObserver = object : ImageCapture.OnImageCapturedCallback() {
         override fun onCaptureSuccess(image: ImageProxy) {
             super.onCaptureSuccess(image)
 
             image.toBitmap().let { imageBitmap ->
                 _imageCaptureUIState.update { ImageCaptureUIState.ImagePreview(imageBitmap) }
+                _imageContent = imageBitmap
                 generateContent(imageBitmap)
             }
-        }
-
-        override fun onError(exception: ImageCaptureException) {
-            super.onError(exception)
         }
     }
 
     private fun generateContent(image: Bitmap) {
         _makeMealUIState.update { MakeMealUIState.Loading }
+
+        val prompt = "I have the ingredients above. Not sure what to cook $_mealType. Show me a list of $_cuisineType foods with the recipes. Do not ask for any information."
+        Log.i("Prompt ::", prompt)
+
         viewModelScope.launch(Dispatchers.IO) {
-            val contet = content {
+            val content = content {
                 image(image)
-                text("What is this thing in this image?")
+                text(prompt)
             }
 
             try {
-                val response = generativeModel.generateContent(contet)
+                val response = generativeModel.generateContent(content)
                 _makeMealUIState.update { MakeMealUIState.ContentGenerated(response.text.toString()) }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -70,6 +75,28 @@ class MakeMealViewModel: ViewModel() {
     fun activateCameraPreviewMode() {
         _imageCaptureUIState.update { ImageCaptureUIState.CameraPreview }
         _makeMealUIState.update { MakeMealUIState.Idle }
+    }
+
+    fun onPhotoPickedFromGallery(bitmap: Bitmap) {
+        generateContent(bitmap)
+        _imageContent = bitmap
+        _imageCaptureUIState.update { ImageCaptureUIState.ImagePreview(bitmap) }
+    }
+
+    fun updateMealType(mealType: String) {
+        _mealType = if (mealType.isNotEmpty()) "for $mealType" else ""
+
+        if (_makeMealUIState.value is MakeMealUIState.ContentGenerated) {
+            generateContent(_imageContent)
+        }
+    }
+
+    fun updateCuisineType(cuisineType: String) {
+        _cuisineType =if (cuisineType.isNotEmpty()) "$cuisineType cuisine" else ""
+
+        if (_makeMealUIState.value is MakeMealUIState.ContentGenerated) {
+            generateContent(_imageContent)
+        }
     }
 }
 
