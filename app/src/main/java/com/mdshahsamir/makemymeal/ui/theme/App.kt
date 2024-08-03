@@ -1,5 +1,7 @@
 package com.mdshahsamir.makemymeal.ui.theme
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,6 +14,30 @@ import com.mdshahsamir.makemymeal.ui.makemeal.MakeMealScreen
 @Composable
 fun MakeMyMealApp(navHostController: NavHostController) {
     NavHost(
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(800)
+            )
+        },
+        exitTransition =  {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(800)
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(800)
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(800)
+            )
+        },
         navController = navHostController,
         startDestination = NavigationScreen.Dashboard.route
     ) {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MakeMyMeal</string>
+    <string name="app_name">Make Meal</string>
     <string name="create_recipe">Create Recipe</string>
     <string name="make_meal">Make Meal</string>
     <string name="create_recipe_helper_text">Take a picture or pick a photo of a food item for which you want to create a recipe.</string>
