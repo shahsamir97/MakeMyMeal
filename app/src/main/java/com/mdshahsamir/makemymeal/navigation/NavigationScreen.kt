@@ -9,11 +9,13 @@ object Route {
     const val DASHBOARD = "dashboard"
     const val CREATE_RECIPE = "create_recipe"
     const val MAKE_MEAL = "make_meal"
+    const val LOSE_OR_GAIN_WEIGHT = "lose_or_gain_weight"
 }
 
 sealed class NavigationScreen(@RouteValue val route: String) {
     data object Dashboard : NavigationScreen(Route.DASHBOARD)
     data object CreateRecipe : NavigationScreen(Route.CREATE_RECIPE)
     data object MakeMeal : NavigationScreen(Route.MAKE_MEAL)
+    data object LoseORGainWeight : NavigationScreen(Route.LOSE_OR_GAIN_WEIGHT)
 }
 

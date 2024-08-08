@@ -1,4 +1,4 @@
-package com.mdshahsamir.makemymeal.ui.theme
+package com.mdshahsamir.makemymeal.ui
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import com.mdshahsamir.makemymeal.navigation.NavigationScreen
 import com.mdshahsamir.makemymeal.ui.createrecipe.CreateRecipeScreen
 import com.mdshahsamir.makemymeal.ui.dashboard.DashboardScreen
+import com.mdshahsamir.makemymeal.ui.loseorgainweight.LoseOrGainWeightScreen
 import com.mdshahsamir.makemymeal.ui.makemeal.MakeMealScreen
 
 @Composable
@@ -51,6 +52,10 @@ fun MakeMyMealApp(navHostController: NavHostController) {
 
         composable(NavigationScreen.MakeMeal.route) {
             MakeMealScreen()
+        }
+
+        composable(NavigationScreen.LoseORGainWeight.route) {
+            LoseOrGainWeightScreen()
         }
     }
 }

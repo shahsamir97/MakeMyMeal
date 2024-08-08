@@ -77,6 +77,10 @@ fun CreateRecipeContent(
         showImagePreview = imageCaptureUIState is ImageCaptureUIState.ImagePreview
     }
 
+    LaunchedEffect(key1 = scrollState.maxValue) {
+        scrollState.animateScrollTo(scrollState.maxValue)
+    }
+
     Scaffold { contentPadding ->
         Column(
             modifier = Modifier

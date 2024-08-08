@@ -1,11 +1,11 @@
 package com.mdshahsamir.makemymeal.ui.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -62,6 +62,9 @@ internal fun DashboardScreen(navController: NavController) {
         },
         onClickMakeMeal = {
             navController.navigate(NavigationScreen.MakeMeal.route)
+        },
+        onClickLoseOrGainWeight = {
+            navController.navigate(NavigationScreen.LoseORGainWeight.route)
         }
     )
 }
@@ -70,54 +73,83 @@ internal fun DashboardScreen(navController: NavController) {
 internal fun DashboardContent(
     onClickCreateRecipe: () -> Unit,
     onClickMakeMeal: () -> Unit,
+    onClickLoseOrGainWeight: () -> Unit,
 ) {
     val createRecipeLottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.create_recip))
     val makeMealLottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.making_meal))
+    val workoutLottieComp by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.workout))
 
 
     Scaffold(
         topBar = { MyTopAppBar() }
-    )
-    { contentPadding ->
-        Row(
-            modifier = Modifier
-                .padding(contentPadding)
-                .padding(16.dp)
+    ) { contentPadding ->
+        Column( modifier = Modifier
+            .padding(contentPadding)
+            .padding(16.dp)
         ) {
-            Card(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .aspectRatio(1f),
-                onClick = onClickCreateRecipe,
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+            Row {
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .aspectRatio(1f),
+                    onClick = onClickCreateRecipe,
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
                 ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.create_recipe),
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Center,
-                    )
-                    Spacer(modifier = Modifier.height(6.dp))
-                    LottieAnimation(
-                        composition = createRecipeLottieComp,
-                        iterations = LottieConstants.IterateForever,
-                        contentScale = ContentScale.Fit,
-                    )
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.create_recipe),
+                            style = MaterialTheme.typography.titleLarge,
+                            textAlign = TextAlign.Center,
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        LottieAnimation(
+                            composition = createRecipeLottieComp,
+                            iterations = LottieConstants.IterateForever,
+                            contentScale = ContentScale.Fit,
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .aspectRatio(1f),
+                    onClick = onClickMakeMeal,
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.make_meal),
+                            style = MaterialTheme.typography.titleLarge,
+                            textAlign = TextAlign.Center,
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        LottieAnimation(
+                            composition = makeMealLottieComp,
+                            iterations = LottieConstants.IterateForever,
+                            contentScale = ContentScale.Fit,
+                        )
+                    }
                 }
             }
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Card(
                 modifier = Modifier
-                    .weight(1f)
                     .fillMaxWidth()
-                    .aspectRatio(1f),
-                onClick = onClickMakeMeal,
+                    .fillMaxHeight(0.4f),
+                onClick = onClickLoseOrGainWeight,
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
             ) {
                 Column(
@@ -127,13 +159,13 @@ internal fun DashboardContent(
                 ) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.make_meal),
+                        text = "Lose or Gain Weight",
                         style = MaterialTheme.typography.titleLarge,
                         textAlign = TextAlign.Center,
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     LottieAnimation(
-                        composition = makeMealLottieComp,
+                        composition = workoutLottieComp,
                         iterations = LottieConstants.IterateForever,
                         contentScale = ContentScale.Fit,
                     )
@@ -179,7 +211,8 @@ fun DashboardContentPreview() {
     MakeMyMealAppTheme {
         DashboardContent(
             onClickCreateRecipe = {},
-            onClickMakeMeal = {}
+            onClickMakeMeal = {},
+            onClickLoseOrGainWeight = {}
         )
     }
 }

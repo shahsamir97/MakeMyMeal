@@ -7,6 +7,15 @@
     <string name="capture_image">Capture Image</string>
     <string name="dashboard">Dashboard</string>
     <string name="select_meal_type">Select Meal Type</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="select_gender">Select Gender</string>
+    <string name="i_want_to">I want to</string>
+
+    <string-array name="type_of_meal_plan">
+        <item>Lose Weight</item>
+        <item>Gain Weight</item>
+    </string-array>
 
     <string-array name="meal_type">
         <item>Breakfast</item>
@@ -22,5 +31,10 @@
         <item>Indian</item>
         <item>Japanese</item>
         <item>Mexican</item>
+    </string-array>
+
+    <string-array name="gender_type">
+        <item>Male</item>
+        <item>Female</item>
     </string-array>
 </resources>

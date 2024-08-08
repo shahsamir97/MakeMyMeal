@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.mdshahsamir.makemymeal.ui.theme.MakeMyMealApp
+import com.mdshahsamir.makemymeal.ui.MakeMyMealApp
 import com.mdshahsamir.makemymeal.ui.theme.MakeMyMealAppTheme
 
 class MainActivity : ComponentActivity() {
