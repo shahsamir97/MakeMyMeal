@@ -1,23 +1,26 @@
 package com.mdshahsamir.makemymeal.ui.makemeal
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageProxy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.ai.client.generativeai.type.content
 import com.mdshahsamir.makemymeal.common.ImageCaptureUIState
-import com.mdshahsamir.makemymeal.gemini.generativeModel
+import com.mdshahsamir.makemymeal.data.ai.GenerativeModelService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
 
-class MakeMealViewModel: ViewModel() {
+@HiltViewModel
+class MakeMealViewModel @Inject constructor(
+    private val generativeModelService: GenerativeModelService
+): ViewModel() {
 
     private val _makeMealUIState = MutableStateFlow<MakeMealUIState>(MakeMealUIState.Idle)
     val makeMealUIState: StateFlow<MakeMealUIState> = _makeMealUIState
@@ -45,17 +48,11 @@ class MakeMealViewModel: ViewModel() {
         _makeMealUIState.update { MakeMealUIState.Loading }
 
         val prompt = "I have the ingredients above. Not sure what to cook $_mealType. Show me a list of $_cuisineType foods with the recipes. Do not ask for any information."
-        Log.i("Prompt ::", prompt)
 
         viewModelScope.launch(Dispatchers.IO) {
-            val content = content {
-                image(image)
-                text(prompt)
-            }
-
             try {
-                val response = generativeModel.generateContent(content)
-                _makeMealUIState.update { MakeMealUIState.ContentGenerated(response.text.toString()) }
+                val response = generativeModelService.generateResponse(prompt, image)
+                _makeMealUIState.update { MakeMealUIState.ContentGenerated(response) }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _makeMealUIState.update { MakeMealUIState.Error(e.message.toString()) }

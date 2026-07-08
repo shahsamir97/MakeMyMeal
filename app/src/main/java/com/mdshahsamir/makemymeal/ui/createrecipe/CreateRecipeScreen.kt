@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mdshahsamir.makemymeal.R
@@ -36,7 +37,7 @@ import com.mdshahsamir.makemymeal.ui.uicomponents.TypeWriterText
 
 @Composable
 fun CreateRecipeScreen(
-    createRecipeViewModel: CreateRecipeViewModel = viewModel()
+    createRecipeViewModel: CreateRecipeViewModel = hiltViewModel()
 ) {
     val createRecipeUIState by createRecipeViewModel.createRecipeUIState.collectAsStateWithLifecycle()
     val imageCaptureUIState by createRecipeViewModel.imageCaptureUIState.collectAsStateWithLifecycle()

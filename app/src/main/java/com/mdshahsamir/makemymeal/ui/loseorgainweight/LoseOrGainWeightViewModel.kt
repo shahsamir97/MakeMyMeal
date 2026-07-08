@@ -2,14 +2,19 @@ package com.mdshahsamir.makemymeal.ui.loseorgainweight
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mdshahsamir.makemymeal.gemini.generativeModel
+import com.mdshahsamir.makemymeal.data.ai.GenerativeModelService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoseOrGainWeightViewModel : ViewModel() {
+@HiltViewModel
+class LoseOrGainWeightViewModel @Inject constructor(
+    private val generativeModelService: GenerativeModelService
+) : ViewModel() {
 
     private val _weightUIState = MutableStateFlow<WeightUIState>(WeightUIState.Idle)
     val weightUIState: StateFlow<WeightUIState> = _weightUIState
@@ -24,8 +29,8 @@ class LoseOrGainWeightViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = generativeModel.generateContent(prompt)
-                _weightUIState.update { WeightUIState.Success(response.text.toString()) }
+                val response = generativeModelService.generateResponse(prompt, null)
+                _weightUIState.update { WeightUIState.Success(response) }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _weightUIState.update { WeightUIState.Error("Something went wrong! Try again") }

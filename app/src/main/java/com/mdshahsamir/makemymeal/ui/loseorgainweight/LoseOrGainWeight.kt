@@ -42,16 +42,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mdshahsamir.makemymeal.R
-import com.mdshahsamir.makemymeal.ui.makemeal.MakeMealUIState
 import com.mdshahsamir.makemymeal.ui.theme.MakeMyMealAppTheme
 import com.mdshahsamir.makemymeal.ui.uicomponents.MyLoader
 import com.mdshahsamir.makemymeal.ui.uicomponents.TypeWriterText
 
 @Composable
-fun LoseOrGainWeightScreen(loseOrGainWeightViewModel: LoseOrGainWeightViewModel = viewModel()) {
+fun LoseOrGainWeightScreen(loseOrGainWeightViewModel: LoseOrGainWeightViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
     val weightUIState by loseOrGainWeightViewModel.weightUIState.collectAsStateWithLifecycle()
