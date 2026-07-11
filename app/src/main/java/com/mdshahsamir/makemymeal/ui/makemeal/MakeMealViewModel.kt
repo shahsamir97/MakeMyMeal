@@ -6,7 +6,9 @@ import androidx.camera.core.ImageProxy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mdshahsamir.makemymeal.common.ImageCaptureUIState
-import com.mdshahsamir.makemymeal.data.ai.GenerativeModelService
+import com.mdshahsamir.makemymeal.data.ai.GenerativeModelRepository
+import com.mdshahsamir.makemymeal.domain.CreateRecipeUseCase
+import com.mdshahsamir.makemymeal.domain.MakeMealUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MakeMealViewModel @Inject constructor(
-    private val generativeModelService: GenerativeModelService
+    private val makeMealUseCase: MakeMealUseCase
 ): ViewModel() {
 
     private val _makeMealUIState = MutableStateFlow<MakeMealUIState>(MakeMealUIState.Idle)
@@ -47,16 +49,16 @@ class MakeMealViewModel @Inject constructor(
     private fun generateContent(image: Bitmap) {
         _makeMealUIState.update { MakeMealUIState.Loading }
 
-        val prompt = "I have the ingredients above. Not sure what to cook $_mealType. Show me a list of $_cuisineType foods with the recipes. Do not ask for any information."
-
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = generativeModelService.generateResponse(prompt, image)
-                _makeMealUIState.update { MakeMealUIState.ContentGenerated(response) }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _makeMealUIState.update { MakeMealUIState.Error(e.message.toString()) }
-            }
+        viewModelScope.launch {
+           makeMealUseCase(mealType = _mealType, cuisineType = _cuisineType, image = image)
+                .onSuccess { content ->
+                    _makeMealUIState.update { MakeMealUIState.ContentGenerated(content) }
+                }
+                .onFailure { error ->
+                    _makeMealUIState.update {
+                        MakeMealUIState.Error(error.message ?: "An error occurred")
+                    }
+                }
         }
     }
 

@@ -2,7 +2,7 @@ package com.mdshahsamir.makemymeal.ui.loseorgainweight
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mdshahsamir.makemymeal.data.ai.GenerativeModelService
+import com.mdshahsamir.makemymeal.domain.CreateDietMealUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoseOrGainWeightViewModel @Inject constructor(
-    private val generativeModelService: GenerativeModelService
+    private val createDietMealUseCase: CreateDietMealUseCase
+
 ) : ViewModel() {
 
     private val _weightUIState = MutableStateFlow<WeightUIState>(WeightUIState.Idle)
@@ -25,16 +26,15 @@ class LoseOrGainWeightViewModel @Inject constructor(
 
     fun generateContent(gender: String, age: String, weight: String, loseOrGainWeight: String) {
         _weightUIState.update { WeightUIState.Loading }
-        val prompt = "My gender is $gender, age is $age and weight is $weight. I want to $loseOrGainWeight. With your analysis suggest me some recipes. Do no ask any information."
 
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = generativeModelService.generateResponse(prompt, null)
-                _weightUIState.update { WeightUIState.Success(response) }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _weightUIState.update { WeightUIState.Error("Something went wrong! Try again") }
-            }
+        viewModelScope.launch {
+            createDietMealUseCase(age, gender, weight, loseOrGainWeight)
+                .onSuccess { content ->
+                    _weightUIState.update { WeightUIState.Success(content) }
+                }
+                .onFailure { error ->
+                    _weightUIState.update { WeightUIState.Error(error.message ?: "An error occurred") }
+                }
         }
     }
 }

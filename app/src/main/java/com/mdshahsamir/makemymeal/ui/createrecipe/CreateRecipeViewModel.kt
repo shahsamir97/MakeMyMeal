@@ -7,7 +7,7 @@ import androidx.camera.core.ImageProxy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mdshahsamir.makemymeal.common.ImageCaptureUIState
-import com.mdshahsamir.makemymeal.data.ai.GenerativeModelService
+import com.mdshahsamir.makemymeal.domain.CreateRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateRecipeViewModel @Inject constructor(
-    private val generativeModelService: GenerativeModelService
+    private val createRecipeUseCase: CreateRecipeUseCase
 ): ViewModel() {
 
     private val _createRecipeUIState = MutableStateFlow<CreateRecipeUIState>(CreateRecipeUIState.Idle)
@@ -46,16 +46,17 @@ class CreateRecipeViewModel @Inject constructor(
 
     private fun generateContent(image: Bitmap) {
         _createRecipeUIState.update { CreateRecipeUIState.Loading }
-        viewModelScope.launch(Dispatchers.IO) {
-            val prompt = "Accurately identify the food in the image and provide an appropriate and recipe consistent with your analysis. Do not ask any question"
 
-            try {
-                val response = generativeModelService.generateResponse(prompt, image)
-                _createRecipeUIState.update { CreateRecipeUIState.ContentGenerated(response) }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _createRecipeUIState.update { CreateRecipeUIState.Error(e.message.toString()) }
-            }
+        viewModelScope.launch {
+            createRecipeUseCase(image)
+                .onSuccess { content ->
+                    _createRecipeUIState.update { CreateRecipeUIState.ContentGenerated(content) }
+                }
+                .onFailure { error ->
+                    _createRecipeUIState.update {
+                        CreateRecipeUIState.Error(error.message ?: "An error occurred")
+                    }
+                }
         }
     }
 

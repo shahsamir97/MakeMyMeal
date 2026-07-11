@@ -2,7 +2,7 @@ package com.mdshahsamir.makemymeal.data.ai
 
 import android.graphics.Bitmap
 
-interface GenerativeModelService {
+interface GenerativeModelRepository {
 
     suspend fun generateResponse(prompt: String, image: Bitmap?): Result<String>
 }

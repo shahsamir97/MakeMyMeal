@@ -3,8 +3,8 @@ package com.mdshahsamir.makemymeal.di
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.GenerationConfig
 import com.mdshahsamir.makemymeal.BuildConfig
-import com.mdshahsamir.makemymeal.data.ai.GenerativeModelService
-import com.mdshahsamir.makemymeal.data.ai.GenerativeModelServiceImpl
+import com.mdshahsamir.makemymeal.data.ai.GenerativeModelRepository
+import com.mdshahsamir.makemymeal.data.ai.GenerativeModelRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -18,8 +18,8 @@ abstract class GeminiModule {
 
     @Binds
     abstract fun bindGenerativeModelService(
-        generativeModelServiceImpl: GenerativeModelServiceImpl
-    ): GenerativeModelService
+        generativeModelServiceImpl: GenerativeModelRepositoryImpl
+    ): GenerativeModelRepository
 
     companion object {
         @Provides

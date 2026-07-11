@@ -3,7 +3,7 @@ package com.mdshahsamir.makemymeal.domain
 import com.mdshahsamir.makemymeal.data.ai.GenerativeModelRepository
 import javax.inject.Inject
 
-class CreatDietMealUseCase @Inject constructor(
+class CreateDietMealUseCase @Inject constructor(
     private val generativeModelRepository: GenerativeModelRepository
 ) {
     suspend operator fun invoke(age: String, gender: String, weight: String, dietType: String): Result<String> {
