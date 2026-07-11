@@ -55,14 +55,20 @@ fun LoseOrGainWeightScreen(loseOrGainWeightViewModel: LoseOrGainWeightViewModel 
 
     val weightUIState by loseOrGainWeightViewModel.weightUIState.collectAsStateWithLifecycle()
 
-    LoseOrGainWeightContent(onClickCreateRecipe = { gender, age, weight, loseOrGainWeight ->
-        if (loseOrGainWeightViewModel.validateInput(gender, age, weight, loseOrGainWeight)) {
-            loseOrGainWeightViewModel.generateContent(gender, age, weight, loseOrGainWeight)
-        } else {
-            Toast.makeText(context, "All fields required! Please Select all required data.", Toast.LENGTH_SHORT).show()
-        }
-    },
-        weightUIState)
+    LoseOrGainWeightContent(
+        onClickCreateRecipe = { gender, age, weight, loseOrGainWeight ->
+            if (loseOrGainWeightViewModel.validateInput(gender, age, weight, loseOrGainWeight)) {
+                loseOrGainWeightViewModel.generateContent(gender, age, weight, loseOrGainWeight)
+            } else {
+                Toast.makeText(
+                    context,
+                    "All fields required! Please Select all required data.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        },
+        weightUIState
+    )
 
     when(weightUIState) {
         WeightUIState.Loading -> { MyLoader() }
@@ -160,7 +166,7 @@ fun LoseOrGainWeightContent(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Your Weight: $weightSliderPosition",
+                text = "Your Weight: $weightSliderPosition kg",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge
             )
