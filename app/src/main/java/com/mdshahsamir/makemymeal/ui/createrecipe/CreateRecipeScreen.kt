@@ -71,12 +71,6 @@ fun CreateRecipeContent(
     onClosePreview: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
-    var showImagePreview by rememberSaveable { mutableStateOf(false) }
-
-
-    LaunchedEffect(imageCaptureUIState) {
-        showImagePreview = imageCaptureUIState is ImageCaptureUIState.ImagePreview
-    }
 
     LaunchedEffect(key1 = scrollState.maxValue) {
         scrollState.animateScrollTo(scrollState.maxValue)

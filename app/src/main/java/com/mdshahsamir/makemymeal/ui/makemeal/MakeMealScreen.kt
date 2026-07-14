@@ -93,14 +93,9 @@ fun MakeMealContent(
     val cuisineType = stringArrayResource(id = R.array.cuisine_type)
 
     val scrollState = rememberScrollState()
-    var showImagePreview by rememberSaveable { mutableStateOf(false) }
 
     var selectedMealType by rememberSaveable { mutableStateOf("") }
     var selectedCuisineType by rememberSaveable { mutableStateOf("") }
-
-    LaunchedEffect(imageCaptureUIState) {
-        showImagePreview = imageCaptureUIState is ImageCaptureUIState.ImagePreview
-    }
 
     LaunchedEffect(key1 = scrollState.maxValue) {
         scrollState.animateScrollTo(scrollState.maxValue)
