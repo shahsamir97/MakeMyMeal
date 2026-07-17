@@ -2,11 +2,9 @@ package com.mdshahsamir.makemymeal.data.ai
 
 import android.graphics.Bitmap
 import com.google.ai.client.generativeai.GenerativeModel
-import com.google.ai.client.generativeai.type.FinishReason
 import com.google.ai.client.generativeai.type.content
 import com.mdshahsamir.makemymeal.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
