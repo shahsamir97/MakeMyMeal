@@ -2,14 +2,12 @@ package com.mdshahsamir.makemymeal.ui.createrecipe
 
 import android.graphics.Bitmap
 import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mdshahsamir.makemymeal.common.ImageCaptureUIState
 import com.mdshahsamir.makemymeal.domain.CreateRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -37,10 +35,6 @@ class CreateRecipeViewModel @Inject constructor(
                 _imageCaptureUIState.update { ImageCaptureUIState.ImagePreview(imageBitmap) }
                 generateContent(imageBitmap)
             }
-        }
-
-        override fun onError(exception: ImageCaptureException) {
-            super.onError(exception)
         }
     }
 

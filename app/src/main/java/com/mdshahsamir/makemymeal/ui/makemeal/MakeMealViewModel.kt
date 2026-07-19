@@ -6,11 +6,8 @@ import androidx.camera.core.ImageProxy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mdshahsamir.makemymeal.common.ImageCaptureUIState
-import com.mdshahsamir.makemymeal.data.ai.GenerativeModelRepository
-import com.mdshahsamir.makemymeal.domain.CreateRecipeUseCase
 import com.mdshahsamir.makemymeal.domain.MakeMealUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

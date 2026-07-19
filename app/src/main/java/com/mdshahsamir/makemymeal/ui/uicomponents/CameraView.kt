@@ -1,8 +1,6 @@
 package com.mdshahsamir.makemymeal.ui.uicomponents
 
-import android.content.ContentResolver
 import android.graphics.Bitmap
-import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
